@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 piaozhiye <piaozhiye@gmail.com>
+# append to /etc/asound.conf; adjust card index to your codec
+# (es8388 was card0 on early images, card1 after the DLPMerge rework)
+pcm.eqdrc_cap {
+    type eqdrc
+    slave.pcm "hw:1,0"
+    para_path "/usr/share/rkaudio/rkaudio_effect_eqdrc_48000hz_2ch.bin"
+}
+pcm.eqdrc_play {
+    type eqdrc
+    slave.pcm "hw:1,0"
+    para_path "/usr/share/rkaudio/rkaudio_effect_eqdrc_48000hz_2ch.bin"
+}

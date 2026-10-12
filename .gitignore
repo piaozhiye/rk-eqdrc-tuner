@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 piaozhiye <piaozhiye@gmail.com>
+build_aarch64/
+eqdrc_tuner_pc
+eqdrc_tuner.bin
+eqdrc_tuner_dump.ppm
+slots/
+eqdrc-runtime/alsa-lib/
+eqdrc-runtime/lib/
+eqdrc-runtime/bins/
+build_pc/
+test_eqdrc_para
+docs/

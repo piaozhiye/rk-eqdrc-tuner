@@ -1,0 +1,105 @@
+NOTICE - File Provenance and License Scope
+===========================================
+
+This repository mixes code from three origins. The MIT LICENSE in the
+root applies to the files listed in Section 1. Files in Sections 2 and 3
+retain their respective copyright notices and license terms; they are
+redistributed under those terms, not under this repository's MIT grant.
+
+
+Section 1 - Original code of this project (MIT, see LICENSE)
+-------------------------------------------------------------
+Copyright (c) 2026 piaozhiye <piaozhiye@gmail.com>
+
+Every file in this section carries an SPDX-License-Identifier: MIT
+header. The scope paragraph of the LICENSE file ties the MIT grant to
+exactly these files.
+
+    ui_main.c            LVGL tuning UI (4 pages, canvas renderers,
+                         draggable EQ nodes / DRC transfer handles,
+                         rotary knobs, band cards)
+    eqdrc_para.c/.h      544-float parameter bin layout + atomic
+                         save/hot-reload I/O
+    lv_port_pc.c          x86 SDL2 simulation backend (mouse input,
+                         framebuffer dump)
+    lv_port_disp.c/.h    display port incl. the rot=0 native-portrait
+                         direct-write path added by this project
+    mini_drm.c/.h        DRM double-buffer backend (raw ioctl, no
+                         libdrm); includes the encoder/crtc selection
+                         fix for unbound connectors
+    include/src/misc/lv_systick.h
+                         tick shim for the LV_TICK_CUSTOM hook
+    build_aarch64.sh, build_pc.sh, deploy.sh, CMakeLists.txt,
+    README.md, .gitignore, LICENSE, NOTICE
+
+    The animated EQ background spectrum is produced by a built-in
+    simulator; this application reads no external audio status
+    objects (no /dev/shm consumers).
+
+
+Section 2 - Rockchip SDK material (NOT under this repository's MIT grant)
+----------------------------------------------------------------------------
+These files originate from the Rockchip Linux SDK demo application
+"app/lvgl_demo" (verified byte-identical against
+RK3308_LINUX5.10_SDK_RELEASE_V1.6.0_20241220; the lineage reaches this
+project). The Rockchip SDK is
+distributed to licensees under the Rockchip SDK license terms; these
+files carry no upstream open-source header. They are Copyright (c)
+Rockchip Electronics Co., Ltd. and are included here for licensees of
+that SDK. Redistribution rights come from the SDK terms, NOT from the
+MIT grant in this repository. Local modifications, where present, are
+noted below.
+
+    (These files are kept free of any added headers or edits except
+    the one change noted below, so they remain traceable to the SDK
+    source. No copyright of this project is claimed over them.)
+
+    evdev.c, evdev.h            touch input via libevdev (rotation,
+                                calibration, sensor ioctls, Kalman
+                                smoothing) - byte-identical to SDK
+    key.c, key.h                hardware key input - byte-identical
+    lv_port_indev.c/.h          LVGL input-device port - byte-identical
+    lv_port_init.c              LVGL init port - SDK file with one local
+                                change (default display rotation 90)
+    main.h                      shared porting includes - byte-identical
+                                to the SDK demo template
+    sys/cpu.c, sys/soc.c, sys/timestamp.c, sys/trace.c (+ headers)
+                                platform status helpers - byte-identical
+    common/kalman_filter.c, common/ui_scaler.c (+ headers)
+                                touch smoothing / UI scaling helpers -
+                                byte-identical
+
+
+Section 3 - Third-party upstream code (upstream licenses apply)
+-----------------------------------------------------------------
+    include/lvgl/**           LVGL 8.4 headers - MIT,
+                              Copyright (c) 2021 LVGL/Kisvegabor and
+                              contributors. Some embedded third-party
+                              components keep their own notices
+                              (qrcodegen - Project Nayuki; lodepng;
+                              stb headers; lv_tlsf; NXP PXP/VGLite
+                              layers).
+    include/lvgl/lv_drivers/**  lv_drivers headers - MIT
+    include/lv_conf.h        LVGL config (MIT template) with project
+                              modifications (font sizes, tick hook)
+    include/libdrm/**        Linux kernel DRM/UAPI headers, MIT/X11
+                              (dual-licensed with GPL in the kernel
+                              tree); Copyright Precision Insight, VA
+                              Linux Systems, Dave Airlie and others.
+
+Section 4 - EQDRC runtime components (NOT in this repository)
+-------------------------------------------------------------------
+The on-device EQDRC chain this tuner drives - the ALSA
+libasound_module_pcm_eqdrc.so plugin, the closed-source
+librkaudio_effect_eqdrc.so algorithm library, and the factory
+parameter bins - is distributed by Rockchip with the RK SDK and is
+not redistributed here. Obtain those components from Rockchip; see
+the "runtime prerequisites" section of the README. The only file
+under eqdrc-runtime/ is asound.conf-sample (this project's text,
+MIT).
+
+Vendored LVGL builds: lib/x86/liblvgl.so and lib/aarch64/liblvgl.so
+are unmodified rebuilds of upstream LVGL 8.4.1 (MIT) compiled with
+this project's include/lv_conf.h plus the tiny src/misc/lv_systick.h
+tick shim in Section 1. They are MIT-licensed LVGL builds; rebuild
+instructions are in the README.
